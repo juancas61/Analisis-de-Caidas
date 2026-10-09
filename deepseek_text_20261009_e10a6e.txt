@@ -1,0 +1,11 @@
+enel-prevencion-caidas-2026/
+│
+├── index.html                          ← Tablero completo (v5.0)
+├── README.md                           ← Documentación
+├── LICENSE                             ← MIT
+├── .gitignore                          ← Exclusiones
+├── .nojekyll                           ← Desactiva Jekyll
+│
+└── .github/
+    └── workflows/
+        └── deploy.yml                  ← Despliegue automático

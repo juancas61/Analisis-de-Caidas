@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Gestión · Prevención de Caídas ENEL 2026</title>
+<meta name="description" content="Tablero de control del proyecto de prevención de caídas ENEL 2026 - 12 semanas · 20 operadores · 1 municipio">
+<meta name="author" content="Juan A. Castillo-M, PhD · ErgoMotion-lab · Universidad del Rosario">
+<meta name="theme-color" content="#0033A0">
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+:root{
+  --enel-blue:#0033A0; --enel-blue-2:#0B4EA2; --enel-blue-3:#1E6FD9;
+  --enel-green:#00A44B; --enel-green-2:#00C25A;
+  --enel-red:#E4002B; --enel-orange:#FF7A00; --enel-yellow:#FFB800;
+  --ink:#0f172a; --ink-2:#334155; --muted:#64748b; --muted-2:#94a3b8;
+  --line:#e2e8f0; --line-2:#eef2f7; --bg:#f4f6fa; --card:#ffffff;
+  --radius:12px; --radius-sm:8px; --radius-lg:16px;
+  --shadow-sm:0 1px 2px rgba(15,23,42,.05);
+  --shadow:0 1px 3px rgba(15,23,42,.06),0 8px 24px rgba(15,23,42,.05);
+  --shadow-lg:0 4px 12px rgba(15,23,42,.08),0 24px 48px rgba(15,23,42,.08);
+  --transition:all .25s cubic-bezier(.4,0,.2,1);
+}
+
+/* ============================================================
+   KEYFRAMES (nivel raíz)
+   ============================================================ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.app-header{
+  background:linear-gradient(135deg,#0a1a3a 0%,#0033A0 55%,#0B4EA2 100%);
+  color:#fff;padding:22px 32px;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 12px rgba(0,0,0,.12);
+  border-bottom:3px solid var(--enel-green);
+}
+.header-inner{
+  max-width:1440px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:16px}
+.brand-mark{
+  width:44px;height:44px;border-radius:10px;
+  background:linear-gradient(135deg,var(--enel-green),var(--enel-blue-3));
+  display:grid;place-items:center;flex-shrink:0;
+  box-shadow:0 4px 12px rgba(0,164,75,.35);
+}
+.brand-mark svg{width:24px;height:24px;fill:#fff}
+.brand-text h1{font-size:17px;font-weight:700;letter-spacing:-.2px;line-height:1.2}
+.brand-text p{font-size:11.5px;color:#a9c2e8;letter-spacing:.3px;text-transform:uppercase;font-weight:500;margin-top:2px}
+.brand-credits{
+  font-size:10.5px;color:#a9c2e8;letter-spacing:.2px;
+  margin-top:4px;font-weight:500;
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+}
+.brand-credits .dot-sep{width:3px;height:3px;border-radius:50%;background:#a9c2e8;opacity:.6}
+.header-meta{display:flex;align-items:center;gap:20px}
+.meta-chip{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  border-radius:10px;padding:8px 14px;display:flex;flex-direction:column;gap:2px;
+  backdrop-filter:blur(8px);
+}
+.meta-chip .label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#a9c2e8;font-weight:600}
+.meta-chip .value{font-size:15px;font-weight:700;color:#fff}
+.meta-chip .value .unit{font-size:11px;font-weight:500;color:#a9c2e8;margin-left:3px}
+
+/* ============================================================
+   NAV TABS
+   ============================================================ */
+.app-nav{
+  background:var(--card);border-bottom:1px solid var(--line);
+  position:sticky;top:89px;z-index:90;
+  box-shadow:0 1px 3px rgba(15,23,42,.04);
+}
+.nav-inner{
+  max-width:1440px;margin:0 auto;
+  display:flex;gap:4px;padding:0 32px;overflow-x:auto;
+}
+.nav-inner::-webkit-scrollbar{height:0}
+.tab-btn{
+  background:none;border:none;cursor:pointer;
+  padding:15px 18px;font-size:13px;font-weight:600;
+  color:var(--muted);font-family:inherit;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:3px solid transparent;
+  transition:var(--transition);white-space:nowrap;
+}
+.tab-btn:hover{color:var(--enel-blue);background:var(--line-2)}
+.tab-btn.active{color:var(--enel-blue);border-bottom-color:var(--enel-green)}
+.tab-btn svg{width:16px;height:16px;fill:currentColor;opacity:.8}
+.tab-btn .badge{
+  background:var(--line);color:var(--muted);
+  font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;
+  transition:var(--transition);
+}
+.tab-btn.active .badge{background:var(--enel-green);color:#fff}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.app-main{max-width:1440px;margin:0 auto;padding:28px 32px 60px}
+.panel{display:none}
+.panel.active{display:block;animation:fadeUp .4s ease}
+.section-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:20px;margin-bottom:20px;flex-wrap:wrap;
+}
+.section-head h2{
+  font-size:20px;font-weight:700;color:var(--ink);
+  letter-spacing:-.3px;display:flex;align-items:center;gap:10px;
+}
+.section-head h2::before{
+  content:'';width:4px;height:22px;border-radius:2px;
+  background:linear-gradient(180deg,var(--enel-green),var(--enel-blue));
+}
+.section-head p{font-size:13px;color:var(--muted);max-width:680px}
+
+/* ============================================================
+   KPI
+   ============================================================ */
+.kpi-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:16px;margin-bottom:28px;
+}
+.kpi-card{
+  background:var(--card);border-radius:var(--radius);
+  padding:18px 20px;box-shadow:var(--shadow);
+  border:1px solid var(--line);position:relative;overflow:hidden;
+  transition:var(--transition);
+}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.kpi-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--accent,var(--enel-blue));
+}
+.kpi-card .kpi-label{
+  font-size:11px;text-transform:uppercase;letter-spacing:.6px;
+  color:var(--muted);font-weight:600;margin-bottom:8px;
+}
+.kpi-card .kpi-value{
+  font-size:28px;font-weight:800;color:var(--ink);
+  letter-spacing:-1px;line-height:1;display:flex;align-items:baseline;gap:4px;
+}
+.kpi-card .kpi-value .unit{font-size:14px;font-weight:600;color:var(--muted)}
+.kpi-card .kpi-sub{font-size:11.5px;color:var(--muted-2);margin-top:6px}
+
+/* ============================================================
+   GANTT
+   ============================================================ */
+.gantt-card{
+  background:var(--card);border-radius:var(--radius);
+  box-shadow:var(--shadow);border:1px solid var(--line);
+  padding:24px;margin-bottom:28px;overflow-x:auto;
+}
+.gantt-title{
+  font-size:14px;font-weight:700;color:var(--ink);
+  margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;
+}
+.gantt-legend{display:flex;gap:14px;font-size:11px;color:var(--muted);font-weight:500}
+.gantt-legend span{display:flex;align-items:center;gap:5px}
+.gantt-legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.gantt{min-width:820px}
+.gantt-header{
+  display:grid;grid-template-columns:220px repeat(12,1fr);
+  gap:4px;margin-bottom:6px;
+}
+.gantt-header .gh-cell{
+  font-size:10.5px;font-weight:700;color:var(--muted);
+  text-align:center;padding:4px 0;text-transform:uppercase;letter-spacing:.4px;
+}
+.gantt-header .gh-cell.month{border-left:2px solid var(--line-2)}
+.gantt-row{
+  display:grid;grid-template-columns:220px repeat(12,1fr);
+  gap:4px;align-items:center;margin-bottom:8px;
+}
+.gantt-row .g-label{
+  font-size:12px;font-weight:600;color:var(--ink-2);
+  padding-right:10px;display:flex;align-items:center;gap:8px;
+}
+.gantt-row .g-label .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.gantt-track{grid-column:2 / -1;position:relative;height:34px}
+.gantt-bar{
+  position:absolute;top:4px;height:26px;border-radius:6px;
+  display:flex;align-items:center;padding:0 10px;
+  font-size:10.5px;font-weight:600;color:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.12);
+  transition:var(--transition);overflow:hidden;white-space:nowrap;
+}
+.gantt-bar:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.gantt-bar .pct{
+  margin-left:auto;background:rgba(255,255,255,.25);
+  padding:1px 6px;border-radius:10px;font-size:9.5px;
+}
+.gantt-grid-lines{
+  position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);
+  pointer-events:none;
+}
+.gantt-grid-lines div{border-right:1px dashed var(--line-2)}
+.gantt-grid-lines div:nth-child(4n){border-right:2px solid var(--line)}
+
+/* ============================================================
+   PHASE CARDS
+   ============================================================ */
+.phase-block{
+  background:var(--card);border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);border:1px solid var(--line);
+  margin-bottom:22px;overflow:hidden;transition:var(--transition);
+}
+.phase-block:hover{box-shadow:var(--shadow-lg)}
+.phase-head{
+  padding:20px 24px;display:flex;align-items:center;gap:16px;
+  border-bottom:1px solid var(--line-2);cursor:pointer;
+  transition:var(--transition);
+  background:linear-gradient(90deg,rgba(0,51,160,.03),transparent);
+}
+.phase-head:hover{background:linear-gradient(90deg,rgba(0,51,160,.06),transparent)}
+.phase-num{
+  width:44px;height:44px;border-radius:11px;
+  display:grid;place-items:center;flex-shrink:0;
+  color:#fff;font-weight:800;font-size:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+.phase-head-info{flex:1;min-width:0}
+.phase-head-info h3{
+  font-size:15.5px;font-weight:700;color:var(--ink);
+  letter-spacing:-.2px;margin-bottom:3px;
+}
+.phase-head-info p{font-size:12px;color:var(--muted);line-height:1.4}
+.phase-weeks{
+  font-size:10.5px;font-weight:700;color:var(--enel-blue);
+  background:rgba(0,51,160,.08);padding:4px 10px;border-radius:20px;
+  white-space:nowrap;letter-spacing:.3px;
+}
+.phase-progress-wrap{display:flex;align-items:center;gap:10px;min-width:130px}
+.mini-bar{
+  flex:1;height:7px;border-radius:4px;background:var(--line);
+  overflow:hidden;min-width:70px;
+}
+.mini-bar > i{
+  display:block;height:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--enel-green),var(--enel-green-2));
+  transition:width .6s cubic-bezier(.4,0,.2,1);
+}
+.mini-pct{font-size:11.5px;font-weight:700;color:var(--ink-2);min-width:34px;text-align:right}
+.phase-chevron{width:20px;height:20px;fill:var(--muted);transition:transform .3s ease;flex-shrink:0}
+.phase-block.open .phase-chevron{transform:rotate(180deg)}
+
+.phase-body{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1)}
+.phase-block.open .phase-body{max-height:5200px}
+.phase-content{padding:22px 24px 26px}
+.phase-meta{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:14px;margin-bottom:22px;
+}
+.meta-item{
+  background:var(--line-2);border-radius:var(--radius-sm);
+  padding:12px 14px;border-left:3px solid var(--enel-blue);
+}
+.meta-item .mi-label{
+  font-size:10px;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--muted);font-weight:700;margin-bottom:4px;
+}
+.meta-item .mi-value{font-size:12.5px;color:var(--ink-2);font-weight:500;line-height:1.45}
+
+.deliverables-title{
+  font-size:12px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.7px;
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.deliverables-title::after{content:'';flex:1;height:1px;background:var(--line)}
+
+/* ============================================================
+   DELIVERABLE ITEMS
+   ============================================================ */
+.deliverable{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 16px;border-radius:var(--radius-sm);
+  border:1px solid var(--line);margin-bottom:9px;
+  background:#fff;transition:var(--transition);cursor:pointer;position:relative;
+}
+.deliverable:hover{border-color:var(--enel-blue-3);background:#fafcff;transform:translateX(3px)}
+.deliverable::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  border-radius:3px 0 0 3px;background:var(--status-color,var(--line));
+  transition:var(--transition);
+}
+.deliverable[data-status="pendiente"]{--status-color:#cbd5e1}
+.deliverable[data-status="encurso"]{--status-color:var(--enel-yellow)}
+.deliverable[data-status="completado"]{--status-color:var(--enel-green)}
+
+.deliv-check{
+  width:20px;height:20px;border-radius:6px;
+  border:2px solid var(--line);flex-shrink:0;
+  display:grid;place-items:center;margin-top:1px;
+  transition:var(--transition);background:#fff;
+}
+.deliv-check svg{width:12px;height:12px;fill:#fff;opacity:0;transform:scale(.5);transition:var(--transition)}
+.deliverable[data-status="completado"] .deliv-check{background:var(--enel-green);border-color:var(--enel-green)}
+.deliverable[data-status="completado"] .deliv-check svg{opacity:1;transform:scale(1)}
+.deliverable[data-status="encurso"] .deliv-check{border-color:var(--enel-yellow);background:var(--enel-yellow)}
+.deliverable[data-status="encurso"] .deliv-check::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+
+.deliv-main{flex:1;min-width:0}
+.deliv-code{
+  font-size:10px;font-weight:800;color:var(--enel-blue);
+  letter-spacing:.5px;text-transform:uppercase;
+  background:rgba(0,51,160,.08);padding:2px 7px;border-radius:4px;
+  display:inline-block;margin-bottom:4px;
+}
+.deliv-name{font-size:13px;font-weight:600;color:var(--ink);line-height:1.4}
+.deliv-desc{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.deliv-sub{
+  font-size:11px;color:var(--ink-2);margin-top:6px;padding-left:10px;
+  border-left:2px solid var(--line);line-height:1.5;
+}
+.deliv-sub strong{color:var(--enel-blue);font-weight:700}
+.deliv-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.tag{
+  font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;
+  background:var(--line-2);color:var(--ink-2);letter-spacing:.2px;
+}
+.tag.resp{background:rgba(0,164,75,.1);color:var(--enel-green)}
+.tag.evid{background:rgba(255,184,0,.15);color:#a06a00}
+.tag.tipo{background:rgba(0,51,160,.08);color:var(--enel-blue)}
+.tag.spec{background:rgba(228,0,43,.08);color:var(--enel-red)}
+.tag.group{background:rgba(0,164,75,.15);color:#006B32;font-weight:700}
+
+.deliv-status-badge{
+  font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;
+  white-space:nowrap;flex-shrink:0;align-self:flex-start;
+  letter-spacing:.3px;text-transform:uppercase;
+}
+.deliverable[data-status="pendiente"] .deliv-status-badge{background:#f1f5f9;color:#64748b}
+.deliverable[data-status="encurso"] .deliv-status-badge{background:rgba(255,184,0,.18);color:#a06a00}
+.deliverable[data-status="completado"] .deliv-status-badge{background:rgba(0,164,75,.12);color:var(--enel-green)}
+
+/* ============================================================
+   TEAM PANELS
+   ============================================================ */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:22px}
+.team-panel{
+  background:var(--card);border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);border:1px solid var(--line);overflow:hidden;
+}
+.team-head{
+  padding:18px 22px;color:#fff;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.team-head.executor{background:linear-gradient(135deg,#0B4EA2,#1E6FD9)}
+.team-head.client{background:linear-gradient(135deg,#006B32,#00A44B)}
+.team-head h3{font-size:14.5px;font-weight:700;display:flex;align-items:center;gap:9px}
+.team-head h3 svg{width:18px;height:18px;fill:#fff;opacity:.9}
+.team-head .count{
+  font-size:11px;font-weight:700;background:rgba(255,255,255,.2);
+  padding:4px 10px;border-radius:20px;
+}
+.team-body{padding:18px 22px}
+
+.member-card{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:var(--radius-sm);
+  border:1px solid var(--line);margin-bottom:9px;background:#fff;
+  transition:var(--transition);position:relative;
+}
+.member-card:hover{border-color:var(--enel-blue-3);box-shadow:var(--shadow-sm)}
+.member-avatar{
+  width:38px;height:38px;border-radius:10px;
+  display:grid;place-items:center;flex-shrink:0;
+  color:#fff;font-weight:700;font-size:13px;
+}
+.member-avatar.executor{background:linear-gradient(135deg,#0B4EA2,#1E6FD9)}
+.member-avatar.client{background:linear-gradient(135deg,#00A44B,#00C25A)}
+.member-info{flex:1;min-width:0}
+.member-info .m-name{
+  font-size:13px;font-weight:700;color:var(--ink);line-height:1.2;
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+}
+.member-info .m-name .unassigned{
+  font-size:9.5px;font-weight:700;background:rgba(255,184,0,.18);
+  color:#a06a00;padding:2px 7px;border-radius:20px;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+.member-info .m-role{font-size:11px;color:var(--muted);margin-top:2px;font-weight:500}
+.member-info .m-area{font-size:10.5px;color:var(--muted-2);margin-top:1px}
+.member-del{
+  background:none;border:none;cursor:pointer;
+  width:26px;height:26px;border-radius:6px;
+  display:grid;place-items:center;color:var(--muted-2);
+  transition:var(--transition);flex-shrink:0;
+}
+.member-del:hover{background:rgba(228,0,43,.1);color:var(--enel-red)}
+.member-del svg{width:14px;height:14px;fill:currentColor}
+
+.empty-state{
+  text-align:center;padding:24px 12px;color:var(--muted-2);
+  font-size:12px;font-style:italic;
+  border:1.5px dashed var(--line);border-radius:var(--radius-sm);
+}
+
+.add-member-form{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  margin-top:14px;padding-top:14px;border-top:1px solid var(--line-2);
+}
+.add-member-form input,.add-member-form select{
+  width:100%;padding:9px 11px;border-radius:var(--radius-sm);
+  border:1px solid var(--line);font-size:12px;font-family:inherit;
+  color:var(--ink);background:#fff;transition:var(--transition);cursor:pointer;
+}
+.add-member-form select{
+  appearance:none;
+  background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat:no-repeat;background-position:right 8px center;
+  background-size:16px;padding-right:30px;
+}
+.add-member-form input:focus,.add-member-form select:focus{
+  outline:none;border-color:var(--enel-blue-3);
+  box-shadow:0 0 0 3px rgba(30,111,217,.12);
+}
+.add-member-form .full{grid-column:1 / -1}
+.add-member-form .form-hint{
+  grid-column:1/-1;font-size:10.5px;color:var(--muted-2);
+  font-style:italic;margin-top:-2px;
+}
+.btn-add{
+  grid-column:1 / -1;background:var(--enel-blue);color:#fff;border:none;
+  padding:10px;border-radius:var(--radius-sm);
+  font-size:12px;font-weight:700;font-family:inherit;
+  cursor:pointer;transition:var(--transition);
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  letter-spacing:.2px;
+}
+.btn-add:hover{background:var(--enel-blue-2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,51,160,.25)}
+.btn-add:active{transform:none}
+.btn-add svg{width:14px;height:14px;fill:#fff}
+
+/* ============================================================
+   CONTROL BOARD
+   ============================================================ */
+.control-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:18px;margin-bottom:24px;
+}
+.control-card{
+  background:var(--card);border-radius:var(--radius);
+  padding:20px 22px;box-shadow:var(--shadow);border:1px solid var(--line);
+}
+.control-card h4{
+  font-size:12px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;
+}
+.progress-ring-wrap{display:flex;align-items:center;gap:20px}
+.progress-ring{position:relative;flex-shrink:0}
+.progress-ring svg{transform:rotate(-90deg)}
+.progress-ring .ring-bg{fill:none;stroke:var(--line);stroke-width:8}
+.progress-ring .ring-fg{
+  fill:none;stroke:url(#ringGrad);stroke-width:8;stroke-linecap:round;
+  transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1);
+}
+.progress-ring .ring-text{
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-size:20px;font-weight:800;color:var(--ink);
+  letter-spacing:-.5px;text-align:center;
+}
+.progress-ring .ring-text small{
+  font-size:11px;font-weight:600;color:var(--muted);
+  display:block;text-align:center;letter-spacing:.3px;
+}
+
+.legend-list{flex:1;display:flex;flex-direction:column;gap:10px}
+.legend-item{display:flex;align-items:center;gap:10px;font-size:12px}
+.legend-item .ld{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.legend-item .ll{flex:1;color:var(--ink-2);font-weight:500}
+.legend-item .lv{font-weight:700;color:var(--ink);font-size:13px}
+
+.status-stack{display:flex;flex-direction:column;gap:12px}
+.status-row{display:flex;align-items:center;gap:12px}
+.status-row .sr-label{font-size:12px;font-weight:600;color:var(--ink-2);width:100px;flex-shrink:0}
+.status-row .sr-bar{flex:1;height:9px;border-radius:5px;background:var(--line);overflow:hidden}
+.status-row .sr-bar > i{
+  display:block;height:100%;border-radius:5px;
+  transition:width .7s cubic-bezier(.4,0,.2,1);
+}
+.status-row .sr-val{font-size:12px;font-weight:700;color:var(--ink);width:38px;text-align:right;flex-shrink:0}
+
+.kpi-targets{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:12px;margin-top:4px;
+}
+.target-tile{
+  background:var(--line-2);border-radius:var(--radius-sm);
+  padding:14px;text-align:center;border-top:3px solid var(--accent,var(--enel-blue));
+  transition:var(--transition);
+}
+.target-tile:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.target-tile .tt-val{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1}
+.target-tile .tt-label{font-size:10.5px;color:var(--muted);margin-top:6px;font-weight:600;line-height:1.3}
+
+/* ============================================================
+   FOOTER & TOAST
+   ============================================================ */
+.app-footer{
+  text-align:center;padding:24px;color:var(--muted-2);
+  font-size:11.5px;border-top:1px solid var(--line);
+  background:var(--card);margin-top:40px;
+}
+.app-footer strong{color:var(--muted);font-weight:600}
+.app-footer .footer-credits{
+  margin-top:8px;font-size:11px;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+}
+.app-footer .footer-credits .dot-sep{width:3px;height:3px;border-radius:50%;background:var(--muted-2);opacity:.6}
+.app-footer .footer-version{
+  margin-top:6px;font-size:10px;color:var(--muted-2);
+  letter-spacing:.4px;text-transform:uppercase;font-weight:600;
+}
+.toast{
+  position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;
+  padding:12px 20px;border-radius:10px;font-size:12.5px;font-weight:600;
+  box-shadow:var(--shadow-lg);z-index:1000;
+  transform:translateY(20px);opacity:0;pointer-events:none;
+  transition:var(--transition);display:flex;align-items:center;gap:9px;
+}
+.toast.show{transform:none;opacity:1}
+.toast svg{width:16px;height:16px;fill:var(--enel-green-2)}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:900px){
+  .app-header{padding:16px 20px}
+  .app-nav{top:auto;position:relative}
+  .nav-inner{padding:0 16px}
+  .app-main{padding:20px 16px 40px}
+  .header-meta{width:100%;overflow-x:auto}
+  .gantt-card{padding:16px}
+  .team-grid{grid-template-columns:1fr}
+  .add-member-form{grid-template-columns:1fr}
+  .section-head{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:360px){
+  .app-header{padding:12px 14px}
+  .app-main{padding:16px 12px 32px}
+  .brand-text h1{font-size:15px}
+  .brand-credits{font-size:9.5px}
+  .kpi-card .kpi-value{font-size:22px}
+  .phase-head{padding:14px 16px;flex-wrap:wrap}
+  .phase-head-info h3{font-size:13.5px}
+  .phase-weeks{font-size:9.5px;padding:3px 8px}
+  .phase-progress-wrap{min-width:auto;width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="brand-text">
+        <h1>Prevención de Caídas · ENEL 2026</h1>
+        <p>Plan de Gestión y Despliegue · 12 Semanas</p>
+        <div class="brand-credits">
+          <span>Desarrollado por Juan A. Castillo-M, PhD</span>
+          <span class="dot-sep"></span>
+          <span>ErgoMotion-lab</span>
+          <span class="dot-sep"></span>
+          <span>Universidad del Rosario</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="meta-chip"><span class="label">Duración</span><span class="value">12<span class="unit">sem</span></span></div>
+      <div class="meta-chip"><span class="label">Población</span><span class="value">20<span class="unit">operadores</span></span></div>
+      <div class="meta-chip"><span class="label">Municipio</span><span class="value">1</span></div>
+      <div class="meta-chip"><span class="label">Progreso Global</span><span class="value" id="headerProgress">0<span class="unit">%</span></span></div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="app-nav">
+  <div class="nav-inner">
+    <button class="tab-btn active" data-tab="resumen">
+      <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+      Resumen Ejecutivo
+    </button>
+    <button class="tab-btn" data-tab="fases">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z"/></svg>
+      Fases y Entregables
+      <span class="badge" id="badgeFases">0</span>
+    </button>
+    <button class="tab-btn" data-tab="equipo">
+      <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      Equipo del Proyecto
+      <span class="badge" id="badgeEquipo">0</span>
+    </button>
+    <button class="tab-btn" data-tab="control">
+      <svg viewBox="0 0 24 24"><path d="M3 3v18h18v-2H5V3H3zm4 14h2v-6H7v6zm4 0h2V7h-2v10zm4 0h2v-4h-2v4z"/></svg>
+      Tablero de Control
+    </button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="app-main">
+
+  <!-- RESUMEN -->
+  <section class="panel active" id="panel-resumen">
+    <div class="section-head">
+      <div>
+        <h2>Resumen Ejecutivo</h2>
+        <p>Visión consolidada del proyecto: indicadores clave, cronograma maestro de 12 semanas y estado de avance por fase.</p>
+      </div>
+    </div>
+    <div class="kpi-grid" id="kpiGrid"></div>
+    <div class="gantt-card">
+      <div class="gantt-title">
+        <span>Cronograma Maestro · 12 Semanas</span>
+        <div class="gantt-legend">
+          <span><i style="background:#00A44B"></i>Completado</span>
+          <span><i style="background:#FFB800"></i>En curso</span>
+          <span><i style="background:#cbd5e1"></i>Planificado</span>
+        </div>
+      </div>
+      <div class="gantt" id="gantt"></div>
+    </div>
+    <div class="section-head" style="margin-top:8px">
+      <div><h2>Estado por Fase</h2><p>Seguimiento sintético del avance de cada fase del proyecto.</p></div>
+    </div>
+    <div id="phaseSummary"></div>
+  </section>
+
+  <!-- FASES -->
+  <section class="panel" id="panel-fases">
+    <div class="section-head">
+      <div>
+        <h2>Fases y Entregables</h2>
+        <p>Estructura de desglose del trabajo agrupada por producto final. Haga clic en cada entregable para actualizar su estado: Pendiente → En curso → Completado.</p>
+      </div>
+    </div>
+    <div id="phasesContainer"></div>
+  </section>
+
+  <!-- EQUIPO -->
+  <section class="panel" id="panel-equipo">
+    <div class="section-head">
+      <div>
+        <h2>Equipo del Proyecto</h2>
+        <p>Seleccione el rol desde la lista desplegable y asigne el nombre del responsable. Si deja el nombre vacío, el rol figurará como "Por asignar".</p>
+      </div>
+    </div>
+    <div class="team-grid">
+      <div class="team-panel">
+        <div class="team-head executor">
+          <h3>
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.5 8 12 11.82 4.5 8 12 4.18zM4 9.5l7 3.5v6.32l-7-3.5V9.5zm9 9.82V13l7-3.5v6.32l-7 3.5z"/></svg>
+            Equipo Ejecutor
+          </h3>
+          <span class="count" id="countExec">0 integrantes</span>
+        </div>
+        <div class="team-body">
+          <div id="listExec"></div>
+          <div class="add-member-form" data-team="exec">
+            <select id="execRole" class="full">
+              <option value="">— Seleccione un rol del proyecto —</option>
+            </select>
+            <input type="text" placeholder="Nombre del responsable (opcional)" id="execName" class="full">
+            <input type="text" placeholder="Área / Organización (opcional)" id="execArea" class="full">
+            <div class="form-hint">Si deja el nombre vacío, el rol se mostrará como "Por asignar".</div>
+            <button class="btn-add" data-add="exec">
+              <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              Agregar integrante
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="team-panel">
+        <div class="team-head client">
+          <h3>
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            Equipo ENEL (Empresa Anfitriona)
+          </h3>
+          <span class="count" id="countClient">0 integrantes</span>
+        </div>
+        <div class="team-body">
+          <div id="listClient"></div>
+          <div class="add-member-form" data-team="client">
+            <select id="clientRole" class="full">
+              <option value="">— Seleccione un rol del proyecto —</option>
+            </select>
+            <input type="text" placeholder="Nombre del responsable (opcional)" id="clientName" class="full">
+            <input type="text" placeholder="Área / Gerencia (opcional)" id="clientArea" class="full">
+            <div class="form-hint">Si deja el nombre vacío, el rol se mostrará como "Por asignar".</div>
+            <button class="btn-add" data-add="client">
+              <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              Agregar integrante
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTROL -->
+  <section class="panel" id="panel-control">
+    <div class="section-head">
+      <div>
+        <h2>Tablero de Control</h2>
+        <p>Indicadores de seguimiento del proyecto: avance global, distribución de entregables por estado y metas comprometidas a 12 meses.</p>
+      </div>
+    </div>
+    <div class="control-grid">
+      <div class="control-card">
+        <h4>Avance Global del Proyecto</h4>
+        <div class="progress-ring-wrap">
+          <div class="progress-ring">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <defs>
+                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00A44B"/>
+                  <stop offset="100%" stop-color="#0B4EA2"/>
+                </linearGradient>
+              </defs>
+              <circle class="ring-bg" cx="60" cy="60" r="50"/>
+              <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="50" stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+            </svg>
+            <div class="ring-text" id="ringText">0%</div>
+          </div>
+          <div class="legend-list" id="ringLegend"></div>
+        </div>
+      </div>
+      <div class="control-card">
+        <h4>Distribución por Estado</h4>
+        <div class="status-stack" id="statusStack"></div>
+      </div>
+      <div class="control-card">
+        <h4>Entregables por Fase</h4>
+        <div class="status-stack" id="phaseBars"></div>
+      </div>
+    </div>
+    <div class="section-head" style="margin-top:8px">
+      <div>
+        <h2>Metas Propuestas · Próximos 12 Meses</h2>
+        <p>Cifras objetivo del programa. No corresponden a resultados históricos ni logros alcanzados.</p>
+      </div>
+    </div>
+    <div class="control-card">
+      <div class="kpi-targets">
+        <div class="target-tile" style="--accent:#FF7A00">
+          <div class="tt-val" style="color:#FF7A00">−40%</div>
+          <div class="tt-label">Prevención<br>Reducir a la mitad la tasa de reportes de caídas, tropezones y resbalones</div>
+        </div>
+        <div class="target-tile" style="--accent:#00A44B">
+          <div class="tt-val" style="color:#00A44B">+10%</div>
+          <div class="tt-label">Potenciación<br>Incrementar control de estabilidad y equilibrio en las cohortes</div>
+        </div>
+        <div class="target-tile" style="--accent:#0B4EA2">
+          <div class="tt-val" style="color:#0B4EA2">&gt;80%</div>
+          <div class="tt-label">Adherencia<br>Asegurar participación sostenida en las sesiones integradas</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <strong>ENEL · Estrategia de Prevención de Caídas 2026</strong> — Documento de gestión para dirección corporativa.
+  Los datos de avance y equipo se almacenan localmente en el navegador.
+  <div class="footer-credits">
+    <span>Desarrollado por Juan A. Castillo-M, PhD</span>
+    <span class="dot-sep"></span>
+    <span>ErgoMotion-lab</span>
+    <span class="dot-sep"></span>
+    <span>Universidad del Rosario</span>
+  </div>
+  <div class="footer-version">Tablero v5.0 · 2026</div>
+</footer>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+  <span id="toastMsg">Guardado</span>
+</div>
+
+<script>
+/* ============================================================
+   ROLES
+   ============================================================ */
+const ROLES_EXEC = [
+  'Director de Proyecto',
+  'Coordinador Biomecánico',
+  'Líder de Entrenamiento',
+  'Especialista en Seguridad y Salud en el Trabajo',
+  'Fisioterapeuta / Kinesiólogo',
+  'Instructor Ukemi (Técnica de caída)',
+  'Analista de Datos y KPIs',
+  'Coordinador Logístico y de Campo',
+  'Comunicador Interno / Cultural',
+  'Diseñador Instruccional',
+  'Médico Laboral',
+  'Ingeniero Industrial / Ergónomo'
+];
+
+const ROLES_CLIENT = [
+  'Líder HSE',
+  'Gerente de Operación MT/AT',
+  'Supervisor de Mantenimiento de Redes',
+  'Analista de Talento Humano',
+  'Coordinador de Contratistas',
+  'Responsable de Bienestar y Salud',
+  'Enlace de Comunicaciones Internas',
+  'Auditor Interno de Seguridad',
+  'Jefe de Operaciones de Campo',
+  'Especialista en Gestión del Riesgo',
+  'Coordinador de Formación y Capacitación'
+];
+
+/* ============================================================
+   DATA MODEL
+   ============================================================ */
+const PHASES = [
+  {
+    id: 'f0', num: '0', code: 'FASE 0',
+    name: 'Movilización y Transición Administrativa',
+    weeks: [1, 2], color: '#0B4EA2',
+    objective: 'Establecer las bases contractuales, metodológicas y de gobernanza del proyecto, así como producir los soportes técnicos y audiovisuales requeridos para las fases siguientes.',
+    meta: [
+      { label: 'Duración', value: 'Semanas 1 – 2' },
+      { label: 'Responsable', value: 'Dirección de Proyecto · HSE ENEL' },
+      { label: 'Documentos base', value: 'Acta de acuerdos · Cronograma · Guías metodológicas' }
+    ],
+    deliverables: [
+      { code: 'E0.1', group: 'Gobernanza', name: 'Acta de acuerdos y gobernanza', desc: 'Formalización de acuerdos entre ejecutor y ENEL; conformación del comité directivo.', sub: ['Firma de acta', 'Comité Operación + HSE + Talento Humano', 'Definición de indicadores de éxito'], tags: ['Contrato','Gobernanza'], tipo: 'Documento' },
+      { code: 'E0.2', group: 'Planeación', name: 'Cronograma detallado y plan de intervención', desc: 'Despliegue semana a semana, selección del municipio y convocatoria de la muestra de 20 operadores.', sub: ['Selección del municipio', 'Plan logístico de traslados', 'Convocatoria de la muestra de 20 operadores'], tags: ['Planeación','Logística'], tipo: 'Plan' },
+      { code: 'E0.3', group: 'Metodología', name: 'Contenidos y guías metodológicas de las fases', desc: 'Diseño instruccional de las fases 1 a 4, incluyendo guiones de sesión y materiales.', sub: ['Guion de sesión por fase', 'Material didáctico', 'Instrumentos de evaluación'], tags: ['Metodología'], tipo: 'Documento' },
+      { code: 'E0.4', group: 'Activación Biomecánica', name: 'Videos de soporte "Activación Biomecánica 3x3"', desc: 'Producción audiovisual del protocolo de 3 minutos (4 rutinarios).', sub: ['Rutinario 1: Propioceptiva', 'Rutinario 2: Vestibular', 'Rutinario 3: Oculomotora', 'Rutinario 4: Core lumbo-pélvico'], tags: ['Audiovisual','3x3'], tipo: 'Audiovisual' },
+      { code: 'E0.5', group: 'Gestión de Fatiga', name: 'Sistema FRMS (Fatigue Risk Management System)', desc: 'Especificación e implementación del sistema: reglas de pausa, umbrales y registro.', sub: ['Definición de umbrales', 'Reglas de pausa de 15 min', 'Registro de cumplimiento'], tags: ['FRMS','Sistema'], tipo: 'Sistema' },
+      { code: 'E0.6', group: 'Escuela de Caídas', name: 'Guía de implementación "Escuela de Caídas"', desc: 'Protocolo de 120 minutos con los cuatro módulos de entrenamiento neuromuscular.', sub: ['Módulo 1: Desinhibición (0-20 min)', 'Módulo 2: Muñecas (20-50 min)', 'Módulo 3: Ukemi (50-90 min)', 'Módulo 4: Absorción (90-120 min)'], tags: ['Escuela','Protocolo'], tipo: 'Guía' }
+    ]
+  },
+  {
+    id: 'f1', num: '1', code: 'FASE 1',
+    name: 'Preparación Técnica y Desarrollo de Productos',
+    weeks: [3, 5], color: '#1E6FD9',
+    objective: 'Desarrollar los productos técnicos y pedagógicos que sustentan la intervención: pruebas clínicas de ingreso, rutinarios de activación, reglas de oro y contenidos de formación progresiva.',
+    meta: [
+      { label: 'Duración', value: 'Semanas 3 – 5' },
+      { label: 'Responsable', value: 'Universidad del Rosario · HSE ENEL' },
+      { label: 'Productos', value: '4 bloques técnicos · 13 evidencias de desarrollo' }
+    ],
+    deliverables: [
+      { code: 'E1.1', group: 'Pruebas Clínicas', name: 'Revisión de literatura y benchmark internacional', desc: 'Revisión sistemática de pruebas clínicas de estabilidad validadas científicamente y de bajo costo para exámenes médicos de ingreso.', sub: ['Búsqueda en PubMed, Scopus, Scielo', 'Identificación de pruebas predictoras de caída', 'Análisis de aplicabilidad en IPS colombianas'], tags: ['Evidencia','Benchmark'], tipo: 'Informe técnico', responsable: 'Universidad del Rosario' },
+      { code: 'E1.2', group: 'Pruebas Clínicas', name: 'Selección de 2–3 pruebas clínicas de bajo costo', desc: 'Definición de pruebas clínicas estandarizadas, aplicables en exámenes de ingreso, con alta sensibilidad como factor predictor.', sub: ['Criterios: <5 min, bajo costo, sin equipos complejos', 'Pruebas candidatas: Romberg, TUG, Single Leg Stance', 'Justificación científica por prueba'], tags: ['Pruebas clínicas','Estandarización'], tipo: 'Documento técnico', responsable: 'Universidad del Rosario' },
+      { code: 'E1.5', group: 'Rutinarios de Activación', name: 'Marco técnico de las 4 categorías de activación', desc: 'Especificación técnica de los 4 rutinarios: Propioceptiva, Vestibular, Oculomotora y Estabilizadores Lumbo-Pélvico.', sub: ['Fundamento neurofisiológico por categoría', 'Relación con prevención de caídas', 'Criterios de progresión semanal'], tags: ['Neurociencia','Activación'], tipo: 'Marco técnico', responsable: 'Universidad del Rosario' },
+      { code: 'E1.6', group: 'Rutinarios de Activación', name: 'Diseño de ejercicios sin elementos externos (≤5 min)', desc: 'Rutinas de máximo 5 minutos que no perturben el centro de gravedad, sin supervisión y compatibles con dotación y botas.', sub: ['4 rutinarios × 5 min', 'Sin elementos externos', 'Adaptados a dotación dieléctrica y botas', 'Autogestionables por el trabajador'], tags: ['Ejercicios','5 min'], tipo: 'Rutinario', responsable: 'Universidad del Rosario' },
+      { code: 'E1.8', group: 'Rutinarios de Activación', name: 'Producción de 4 videos de rutinarios', desc: 'Grabación y edición de los 4 rutinarios en formato audiovisual para uso semanal.', sub: ['Rutinario 1: Activación Propioceptiva', 'Rutinario 2: Activación Vestibular', 'Rutinario 3: Activación Oculomotora', 'Rutinario 4: Estabilizadores Lumbo-Pélvico'], tags: ['Videos','4 rutinarios'], tipo: 'Audiovisual', responsable: 'Universidad del Rosario' },
+      { code: 'E1.9', group: 'Rutinarios de Activación', name: 'Fichas técnicas descargables', desc: 'Documentos PDF con instrucciones paso a paso, contraindicaciones y criterios de seguridad.', sub: ['Ficha por rutinario', 'Señales de alerta', 'Contraindicaciones'], tags: ['Fichas','PDF'], tipo: 'Documento', responsable: 'Universidad del Rosario' },
+      { code: 'E1.10', group: 'Reglas de Oro', name: 'Revisión de evidencia y normativa', desc: 'Revisión de evidencia científica actualizada, buenas prácticas internacionales y normativa nacional aplicable.', sub: ['Normativa colombiana (Res. 0312, 4272)', 'Buenas prácticas OSHA, NIOSH, ISO 45001', 'Evidencia sobre fatiga y caídas'], tags: ['Evidencia','Normativa'], tipo: 'Informe técnico', responsable: 'Universidad del Rosario' },
+      { code: 'E1.11', group: 'Reglas de Oro', name: 'Definición de criterios cuantitativos', desc: 'Establecimiento técnico de tiempos máximos de actividad continua, duración y frecuencia de pausas, y periodos mínimos de recuperación.', sub: ['Tiempos máximos de actividad continua', 'Frecuencia y duración de pausas', 'Periodos mínimos de recuperación'], tags: ['Criterios','Cuantitativo'], tipo: 'Documento técnico', responsable: 'Universidad del Rosario' },
+      { code: 'E1.12', group: 'Reglas de Oro', name: 'Protocolo de Reglas de Oro', desc: 'Procedimiento técnico secuencial para identificación, prevención, control y actuación frente a caídas en actividades de campo.', sub: ['Diagrama de decisión', 'Señales de alerta', 'Criterios para detenerse', 'Acciones de recuperación'], tags: ['Protocolo','Decisión'], tipo: 'Procedimiento', responsable: 'Universidad del Rosario' },
+      { code: 'E1.13', group: 'Reglas de Oro', name: 'Flyer operativo de consulta rápida', desc: 'Herramienta visual y operativa que transforma los criterios técnicos en instrucciones sencillas y accionables.', sub: ['Diseño gráfico', 'Instrucciones concretas', 'Formato bolsillo/casco'], tags: ['Flyer','Visual'], tipo: 'Material gráfico', responsable: 'Universidad del Rosario' },
+      { code: 'E1.15', group: 'Formación Progresiva', name: 'Contenido Nivel Básico', desc: 'Activación de core, movilidad y equilibrio estático. Incluye objetivo de aprendizaje, contenidos técnicos, rutinas prácticas y criterios de progresión.', sub: ['Objetivo de aprendizaje', 'Contenidos técnicos', 'Rutinas prácticas y demostrativas', 'Criterios de progresión', 'Recomendaciones de seguridad'], tags: ['Nivel Básico'], tipo: 'Contenido formativo', responsable: 'Universidad del Rosario' },
+      { code: 'E1.16', group: 'Formación Progresiva', name: 'Contenido Nivel Medio', desc: 'Estabilidad dinámica, coordinación y control postural. Incluye todos los componentes pedagógicos del nivel básico.', sub: ['Objetivo de aprendizaje', 'Contenidos técnicos', 'Rutinas prácticas y demostrativas', 'Criterios de progresión', 'Recomendaciones de seguridad'], tags: ['Nivel Medio'], tipo: 'Contenido formativo', responsable: 'Universidad del Rosario' },
+      { code: 'E1.17', group: 'Formación Progresiva', name: 'Contenido Nivel Avanzado', desc: 'Recuperación del equilibrio, cambios de dirección y respuesta ante estímulos. Sin saltos de alto impacto ni movimientos explosivos.', sub: ['Objetivo de aprendizaje', 'Contenidos técnicos', 'Rutinas prácticas y demostrativas', 'Criterios de progresión', 'Recomendaciones de seguridad'], tags: ['Nivel Avanzado'], tipo: 'Contenido formativo', responsable: 'Universidad del Rosario' }
+    ]
+  },
+  {
+    id: 'f2', num: '2', code: 'FASE 2',
+    name: 'Línea Base y Calibración Biomecánica',
+    weeks: [6, 7], color: '#00A44B',
+    objective: 'Establecer la línea base individual y segmentada de la muestra objetivo de 20 operadores mediante valoración biomecánica profunda en consultorio y valoración rápida en campo.',
+    meta: [
+      { label: 'Duración', value: 'Semanas 6 – 7' },
+      { label: 'Responsable', value: 'Equipo Biomecánico · Universidad del Rosario' },
+      { label: 'Muestra', value: '20 operadores · cohortes etarias' }
+    ],
+    deliverables: [
+      { code: 'E2.1', group: 'Valoración', name: 'Chequeo rápido de 15 minutos', desc: 'Tamizaje inicial estandarizado para identificar variaciones de desempeño y priorizar casos.', sub: ['Formato de tamizaje', 'Aplicación en campo', 'Priorización de casos'], tags: ['Tamizaje','15 min'], tipo: 'Evaluación' },
+      { code: 'E2.8', group: 'Valoración', name: 'Índice de Fatiga (FRMS)', desc: 'Medición de la latencia de reacción neurológica como indicador de fatiga central acumulada.', sub: ['Test de tiempo de reacción', 'Registro basal', 'Comparativa pre/post intervención'], tags: ['FRMS','Fatiga'], tipo: 'Evaluación' }
+    ]
+  },
+  {
+    id: 'f3', num: '3', code: 'FASE 3',
+    name: 'Intervención Operativa: Escuela de Caídas',
+    weeks: [8, 10], color: '#FF7A00',
+    objective: 'Entrenar el reflejo de caída para minimizar el impacto y los períodos de incapacidad en la muestra de 20 operadores, mediante una sesión de 120 minutos en entorno controlado con colchonetas.',
+    meta: [
+      { label: 'Duración', value: 'Semanas 8 – 10' },
+      { label: 'Responsable', value: 'Equipo de Entrenamiento · Universidad del Rosario' },
+      { label: 'Formato', value: '1 sesión · 1 municipio · 20 operadores · 120 min' }
+    ],
+    deliverables: [
+      { code: 'E3.1', group: 'Sesión Operativa', name: 'Sesión única de intervención (20 operadores)', desc: 'Entrenamiento de 120 minutos para la muestra de 20 operadores de mantenimiento en un solo municipio.', sub: ['Convocatoria de 20 operadores', 'Logística de colchonetas', 'Registro de asistencia'], tags: ['Sesión única','20 op'], tipo: 'Sesión' },
+      { code: 'E3.4', group: 'Escuela de Caídas', name: 'Módulo 1 · Desinhibición neuromuscular (0-20 min)', desc: 'Preparación del sistema nervioso eliminando el rigidiz del equipo de protección personal.', sub: ['Ejercicios de desinhibición', 'Adaptación al EPP', 'Calentamiento neuromuscular'], tags: ['Módulo','20 min'], tipo: 'Módulo' },
+      { code: 'E3.5', group: 'Escuela de Caídas', name: 'Módulo 2 · Protección de muñecas (20-50 min)', desc: 'Técnicas para evitar el apoyo rígido y prevenir fracturas de Colles.', sub: ['Técnica de apoyo seguro', 'Flexo-extensión controlada', 'Prevención de fractura de Colles'], tags: ['Módulo','30 min'], tipo: 'Módulo' },
+      { code: 'E3.6', group: 'Escuela de Caídas', name: 'Módulo 3 · Técnica de rodamiento Ukemi (50-90 min)', desc: 'Disipación de la energía cinética mediante rodamiento diagonal sobre el hombro.', sub: ['Rodamiento diagonal', 'Protección de cabeza y cuello', 'Disipación de energía cinética'], tags: ['Ukemi','40 min'], tipo: 'Módulo' },
+      { code: 'E3.7', group: 'Escuela de Caídas', name: 'Módulo 4 · Absorción de impacto (90-120 min)', desc: 'Uso eficiente de la cadena cinética posterior para proteger las articulaciones.', sub: ['Cadena cinética posterior', 'Flexión controlada', 'Protección articular'], tags: ['Módulo','30 min'], tipo: 'Módulo' },
+      { code: 'E3.8', group: 'Sesión Operativa', name: 'Informe de resultados de la sesión', desc: 'Reporte de asistencia, desempeño y observaciones cualitativas del entrenamiento.', sub: ['Asistencia', 'Desempeño observado', 'Observaciones cualitativas'], tags: ['Informe'], tipo: 'Informe' }
+    ]
+  },
+  {
+    id: 'f4', num: '4', code: 'FASE 4',
+    name: 'Monitoreo, Ajuste y Reevaluación',
+    weeks: [11, 12], color: '#00C25A',
+    objective: 'Medir el impacto real del programa mediante KPIs agregados y formular el plan de sostenibilidad a 12 meses.',
+    meta: [
+      { label: 'Duración', value: 'Semanas 11 – 12' },
+      { label: 'Responsable', value: 'HSE ENEL · Analítica del Proyecto' },
+      { label: 'Entregable final', value: 'Informe global + Plan de sostenibilidad 12 meses' }
+    ],
+    deliverables: [
+      { code: 'E4.1', group: 'KPIs y Monitoreo', name: 'Tablero de KPIs de impacto real', desc: 'Seguimiento del TRIR de caídas, adherencia a EPP con suelas de alto COF y días perdidos por desórdenes músculo-esqueléticos.', sub: ['TRIR de caídas', 'Adherencia a EPP (alto COF)', 'Días perdidos por DME'], tags: ['KPI','TRIR'], tipo: 'Tablero' },
+      { code: 'E4.5', group: 'Informes', name: 'Informe global del proceso', desc: 'Documento ejecutivo con resultados, lecciones aprendidas y recomendaciones.', sub: ['Resultados por fase', 'Lecciones aprendidas', 'Recomendaciones'], tags: ['Informe'], tipo: 'Informe' },
+      { code: 'E4.6', group: 'Sostenibilidad', name: 'Plan de sostenibilidad a 12 meses', desc: 'Hoja de ruta para institucionalizar la estrategia más allá del piloto.', sub: ['Gobernanza post-piloto', 'Presupuesto anual', 'Indicadores de largo plazo'], tags: ['Sostenibilidad'], tipo: 'Plan' }
+    ]
+  }
+];
+
+const KPIS = [
+  { label: 'Duración Total', value: '12', unit: 'semanas', sub: 'Intervención intensiva + sostenibilidad', accent: '#0B4EA2' },
+  { label: 'Población Objetivo', value: '20', unit: 'operadores', sub: 'Muestra de mantenimiento MT/AT', accent: '#00A44B' },
+  { label: 'Municipio', value: '1', unit: 'sede', sub: '20 operadores en una sola sesión', accent: '#FF7A00' },
+  { label: 'Fases del Proyecto', value: '5', unit: 'etapas', sub: 'Secuenciales con hitos de ajuste', accent: '#1E6FD9' },
+  { label: 'Entregables', value: '30', unit: 'evidencias', sub: 'Evidencias de desarrollo agrupadas por producto final', accent: '#FFB800' },
+  { label: 'Meta Reducción Caídas', value: '−40%', unit: '', sub: 'Próximos 12 meses', accent: '#E4002B' }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const STORAGE_KEY = 'enel_caidas_2026_v5';
+const LEGACY_KEYS = ['enel_caidas_2026_v4','enel_caidas_2026_v3','enel_caidas_2026_v2','enel_caidas_2026_v1'];
+
+let state = { deliverables: {}, team: { exec: [], client: [] } };
+
+function migrateLegacy(){
+  if(localStorage.getItem(STORAGE_KEY)) return;
+  for(const k of LEGACY_KEYS){
+    const raw = localStorage.getItem(k);
+    if(raw){
+      try{
+        const old = JSON.parse(raw);
+        // Migrar estados de entregables existentes
+        if(old.deliverables){
+          const validCodes = new Set();
+          PHASES.forEach(p => p.deliverables.forEach(d => validCodes.add(d.code)));
+          Object.keys(old.deliverables).forEach(code => {
+            if(validCodes.has(code)) state.deliverables[code] = old.deliverables[code];
+          });
+        }
+        // Migrar equipo si existe
+        if(old.team){
+          state.team = old.team;
+        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        console.info('Estado migrado desde', k);
+        return;
+      }catch(e){ /* continuar con la siguiente clave */ }
+    }
+  }
+}
+
+function loadState(){
+  migrateLegacy();
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      state = Object.assign(state, parsed);
+    }
+  }catch(e){ console.warn('No se pudo cargar el estado', e); }
+
+  const validCodes = new Set();
+  PHASES.forEach(p => p.deliverables.forEach(d => validCodes.add(d.code)));
+  Object.keys(state.deliverables).forEach(code => {
+    if(!validCodes.has(code)) delete state.deliverables[code];
+  });
+  validCodes.forEach(code => {
+    if(!state.deliverables[code]) state.deliverables[code] = 'pendiente';
+  });
+
+  if(!state.team) state.team = { exec: [], client: [] };
+  if(!state.team.exec) state.team.exec = [];
+  if(!state.team.client) state.team.client = [];
+}
+
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch(e){ console.warn('No se pudo guardar el estado', e); }
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function statusLabel(s){
+  return { pendiente:'Pendiente', encurso:'En curso', completado:'Completado' }[s] || s;
+}
+
+function phaseProgress(phase){
+  const total = phase.deliverables.length;
+  let score = 0, done = 0, inprog = 0;
+  phase.deliverables.forEach(d => {
+    const s = state.deliverables[d.code];
+    if(s === 'completado'){ score += 1; done++; }
+    else if(s === 'encurso'){ score += 0.5; inprog++; }
+  });
+  return { total, done, inprog, pct: total === 0 ? 0 : Math.round((score / total) * 100) };
+}
+
+function globalProgress(){
+  let total = 0, score = 0;
+  PHASES.forEach(p => p.deliverables.forEach(d => {
+    total++;
+    const s = state.deliverables[d.code];
+    if(s === 'completado') score += 1;
+    else if(s === 'encurso') score += 0.5;
+  }));
+  return total === 0 ? 0 : Math.round((score / total) * 100);
+}
+
+function globalCounts(){
+  let pending = 0, inprog = 0, done = 0;
+  PHASES.forEach(p => p.deliverables.forEach(d => {
+    const s = state.deliverables[d.code];
+    if(s === 'completado') done++;
+    else if(s === 'encurso') inprog++;
+    else pending++;
+  }));
+  return { pending, inprog, done, total: pending + inprog + done };
+}
+
+function getInitials(text){
+  if(!text) return '?';
+  return text.split(' ').filter(Boolean).map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+
+/* ============================================================
+   RENDER: KPI
+   ============================================================ */
+function renderKpis(){
+  const grid = document.getElementById('kpiGrid');
+  if(!grid) return;
+  grid.innerHTML = KPIS.map(k => `
+    <div class="kpi-card" style="--accent:${k.accent}">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value">${k.value}${k.unit ? `<span class="unit">${k.unit}</span>` : ''}</div>
+      <div class="kpi-sub">${k.sub}</div>
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   RENDER: GANTT
+   ============================================================ */
+function renderGantt(){
+  const container = document.getElementById('gantt');
+  if(!container) return;
+  let html = '';
+
+  html += '<div class="gantt-header">';
+  html += '<div class="gh-cell" style="text-align:left">Fase / Semanas</div>';
+  for(let i=1;i<=12;i++){
+    const isMonth = (i === 1 || i === 5 || i === 9);
+    html += `<div class="gh-cell ${isMonth?'month':''}">S${i}</div>`;
+  }
+  html += '</div>';
+
+  html += '<div class="gantt-header" style="margin-top:-2px;margin-bottom:10px">';
+  html += '<div class="gh-cell"></div>';
+  html += `<div class="gh-cell month" style="grid-column:span 4;color:var(--enel-blue);font-size:10px">MES 1</div>`;
+  html += `<div class="gh-cell month" style="grid-column:span 4;color:var(--enel-blue);font-size:10px">MES 2</div>`;
+  html += `<div class="gh-cell month" style="grid-column:span 4;color:var(--enel-blue);font-size:10px">MES 3</div>`;
+  html += '</div>';
+
+  PHASES.forEach(p => {
+    const start = Math.max(1, Math.min(12, p.weeks[0]));
+    const end = Math.max(1, Math.min(12, p.weeks[1]));
+    const span = end - start + 1;
+    const offset = start - 1;
+    const prog = phaseProgress(p);
+    const barColor = prog.pct === 100 ? '#00A44B' : (prog.pct > 0 ? '#FFB800' : '#cbd5e1');
+
+    html += '<div class="gantt-row">';
+    html += `<div class="g-label"><span class="dot" style="background:${p.color}"></span>${p.code} · ${p.name.split(' ').slice(0,3).join(' ')}</div>`;
+    html += '<div class="gantt-track">';
+    html += '<div class="gantt-grid-lines">' + Array(12).fill('<div></div>').join('') + '</div>';
+    html += `<div class="gantt-bar" style="left:calc(${offset} * (100% / 12) + 2px);width:calc(${span} * (100% / 12) - 4px);background:${barColor};color:${prog.pct>0?'#fff':'#475569'}">
+      ${prog.pct}% <span class="pct">${prog.done}/${prog.total}</span>
+    </div>`;
+    html += '</div></div>';
+  });
+
+  container.innerHTML = html;
+}
+
+/* ============================================================
+   RENDER: PHASE SUMMARY
+   ============================================================ */
+function renderPhaseSummary(){
+  const container = document.getElementById('phaseSummary');
+  if(!container) return;
+  container.innerHTML = PHASES.map(p => {
+    const prog = phaseProgress(p);
+    const barColor = prog.pct === 100 ? '#00A44B' : (prog.pct > 0 ? '#FFB800' : '#cbd5e1');
+    return `
+      <div class="phase-block">
+        <div class="phase-head" style="cursor:default">
+          <div class="phase-num" style="background:${p.color}">${p.num}</div>
+          <div class="phase-head-info">
+            <h3>${p.code} · ${p.name}</h3>
+            <p>${p.objective.substring(0,140)}…</p>
+          </div>
+          <span class="phase-weeks">Semanas ${p.weeks[0]}–${p.weeks[1]}</span>
+          <div class="phase-progress-wrap">
+            <div class="mini-bar"><i style="width:${prog.pct}%;background:${barColor}"></i></div>
+            <span class="mini-pct">${prog.pct}%</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ============================================================
+   RENDER: PHASES
+   ============================================================ */
+function renderPhases(){
+  const container = document.getElementById('phasesContainer');
+  if(!container) return;
+  container.innerHTML = PHASES.map((p, idx) => {
+    const prog = phaseProgress(p);
+    const barColor = prog.pct === 100 ? '#00A44B' : (prog.pct > 0 ? '#FFB800' : '#cbd5e1');
+    const isOpen = idx === 0 ? 'open' : '';
+
+    const groups = {};
+    p.deliverables.forEach(d => {
+      const g = d.group || 'General';
+      if(!groups[g]) groups[g] = [];
+      groups[g].push(d);
+    });
+
+    const groupedHtml = Object.keys(groups).map(gName => {
+      const items = groups[gName];
+      const itemsHtml = items.map(d => {
+        const st = state.deliverables[d.code] || 'pendiente';
+        const tags = (d.tags || []).map((t,i) => {
+          const cls = i === 0 ? 'tipo' : (i === 1 ? 'resp' : '');
+          return `<span class="tag ${cls}">${t}</span>`;
+        }).join('');
+        const sub = (d.sub || []).length ? `
+          <div class="deliv-sub">
+            <strong>Subactividades:</strong> ${d.sub.map(s => `· ${s}`).join(' ')}
+          </div>
+        ` : '';
+        const resp = d.responsable ? `<span class="tag spec">${d.responsable}</span>` : '';
+        return `
+          <div class="deliverable" data-code="${d.code}" data-status="${st}">
+            <div class="deliv-check">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <div class="deliv-main">
+              <span class="deliv-code">${d.code}</span>
+              <div class="deliv-name">${d.name}</div>
+              <div class="deliv-desc">${d.desc}</div>
+              ${sub}
+              <div class="deliv-tags">${tags}${resp}<span class="tag evid">${d.tipo}</span></div>
+            </div>
+            <span class="deliv-status-badge">${statusLabel(st)}</span>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <div class="deliverable-group" style="margin-bottom:18px">
+          <div class="deliverables-title" style="margin-bottom:8px">
+            <span class="tag group">${gName}</span>
+            <span style="font-size:10.5px;color:var(--muted-2);font-weight:500">${items.length} evidencia${items.length===1?'':'s'} de desarrollo</span>
+          </div>
+          ${itemsHtml}
+        </div>
+      `;
+    }).join('');
+
+    const meta = p.meta.map(m => `
+      <div class="meta-item" style="border-left-color:${p.color}">
+        <div class="mi-label">${m.label}</div>
+        <div class="mi-value">${m.value}</div>
+      </div>
+    `).join('');
+
+    return `
+      <div class="phase-block ${isOpen}" data-phase="${p.id}">
+        <div class="phase-head" data-toggle="${p.id}">
+          <div class="phase-num" style="background:${p.color}">${p.num}</div>
+          <div class="phase-head-info">
+            <h3>${p.code} · ${p.name}</h3>
+            <p>${p.objective}</p>
+          </div>
+          <span class="phase-weeks">Semanas ${p.weeks[0]}–${p.weeks[1]}</span>
+          <div class="phase-progress-wrap">
+            <div class="mini-bar"><i style="width:${prog.pct}%;background:${barColor}"></i></div>
+            <span class="mini-pct">${prog.pct}%</span>
+          </div>
+          <svg class="phase-chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+        </div>
+        <div class="phase-body">
+          <div class="phase-content">
+            <div class="phase-meta">${meta}</div>
+            ${groupedHtml}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.querySelectorAll('[data-toggle]').forEach(el => {
+    el.addEventListener('click', () => el.closest('.phase-block').classList.toggle('open'));
+  });
+
+  container.querySelectorAll('.deliverable').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const code = el.dataset.code;
+      const current = state.deliverables[code];
+      const next = current === 'pendiente' ? 'encurso' : (current === 'encurso' ? 'completado' : 'pendiente');
+      state.deliverables[code] = next;
+      saveState();
+      el.dataset.status = next;
+      el.querySelector('.deliv-status-badge').textContent = statusLabel(next);
+      updateAllProgressUI();
+      showToast(`${code} → ${statusLabel(next)}`);
+    });
+  });
+}
+
+/* ============================================================
+   UPDATE PROGRESS UI
+   ============================================================ */
+function updateAllProgressUI(){
+  document.querySelectorAll('.phase-block[data-phase]').forEach(block => {
+    const pid = block.dataset.phase;
+    const phase = PHASES.find(p => p.id === pid);
+    if(!phase) return;
+    const prog = phaseProgress(phase);
+    const barColor = prog.pct === 100 ? '#00A44B' : (prog.pct > 0 ? '#FFB800' : '#cbd5e1');
+    const bar = block.querySelector('.phase-head .mini-bar > i');
+    const pctEl = block.querySelector('.phase-head .mini-pct');
+    if(bar){ bar.style.width = prog.pct + '%'; bar.style.background = barColor; }
+    if(pctEl) pctEl.textContent = prog.pct + '%';
+  });
+
+  const counts = globalCounts();
+  const badgeF = document.getElementById('badgeFases');
+  const badgeE = document.getElementById('badgeEquipo');
+  const headerP = document.getElementById('headerProgress');
+  if(badgeF) badgeF.textContent = counts.total;
+  if(badgeE) badgeE.textContent = (state.team.exec.length + state.team.client.length);
+  if(headerP) headerP.innerHTML = globalProgress() + '<span class="unit">%</span>';
+
+  renderControlBoard();
+  renderPhaseSummary();
+  renderGantt();
+}
+
+/* ============================================================
+   RENDER: TEAM
+   ============================================================ */
+function renderTeam(){
+  ['exec','client'].forEach(team => {
+    const list = document.getElementById(team === 'exec' ? 'listExec' : 'listClient');
+    const countEl = document.getElementById(team === 'exec' ? 'countExec' : 'countClient');
+    if(!list || !countEl) return;
+    const members = state.team[team];
+
+    countEl.textContent = members.length + ' integrante' + (members.length === 1 ? '' : 's');
+
+    if(members.length === 0){
+      list.innerHTML = `<div class="empty-state">Sin integrantes registrados. Use el formulario inferior para agregar.</div>`;
+      return;
+    }
+
+    list.innerHTML = members.map((m, i) => {
+      const displayName = m.name && m.name.trim() ? m.name : m.role;
+      const initials = getInitials(displayName);
+      const unassigned = !m.name || !m.name.trim();
+      return `
+        <div class="member-card">
+          <div class="member-avatar ${team}">${initials}</div>
+          <div class="member-info">
+            <div class="m-name">${displayName}${unassigned ? '<span class="unassigned">Por asignar</span>' : ''}</div>
+            <div class="m-role">${m.role || '—'}</div>
+            <div class="m-area">${m.area || ''}</div>
+          </div>
+          <button class="member-del" data-team="${team}" data-idx="${i}" title="Eliminar" aria-label="Eliminar integrante">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+        </div>
+      `;
+    }).join('');
+
+    list.querySelectorAll('.member-del').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const t = btn.dataset.team;
+        const idx = parseInt(btn.dataset.idx, 10);
+        state.team[t].splice(idx, 1);
+        saveState();
+        renderTeam();
+        const badgeE = document.getElementById('badgeEquipo');
+        if(badgeE) badgeE.textContent = (state.team.exec.length + state.team.client.length);
+        showToast('Integrante eliminado');
+      });
+    });
+  });
+}
+
+/* ============================================================
+   RENDER: CONTROL BOARD
+   ============================================================ */
+function renderControlBoard(){
+  const counts = globalCounts();
+  const gPct = globalProgress();
+
+  const circle = document.getElementById('ringFg');
+  if(circle){
+    const circ = 2 * Math.PI * 50;
+    const offset = circ - (gPct / 100) * circ;
+    circle.setAttribute('stroke-dasharray', circ.toFixed(2));
+    circle.setAttribute('stroke-dashoffset', offset.toFixed(2));
+  }
+  const ringText = document.getElementById('ringText');
+  if(ringText) ringText.innerHTML = `${gPct}%<small>completado</small>`;
+
+  const legend = document.getElementById('ringLegend');
+  if(legend){
+    legend.innerHTML = `
+      <div class="legend-item"><span class="ld" style="background:#00A44B"></span><span class="ll">Completados</span><span class="lv">${counts.done}</span></div>
+      <div class="legend-item"><span class="ld" style="background:#FFB800"></span><span class="ll">En curso</span><span class="lv">${counts.inprog}</span></div>
+      <div class="legend-item"><span class="ld" style="background:#cbd5e1"></span><span class="ll">Pendientes</span><span class="lv">${counts.pending}</span></div>
+      <div class="legend-item" style="border-top:1px solid var(--line);padding-top:8px;margin-top:2px"><span class="ll" style="font-weight:700;color:var(--ink)">Total evidencias</span><span class="lv">${counts.total}</span></div>
+    `;
+  }
+
+  const stack = document.getElementById('statusStack');
+  if(stack){
+    const total = counts.total || 1;
+    const rows = [
+      { label:'Pendientes', value:counts.pending, color:'#cbd5e1' },
+      { label:'En curso', value:counts.inprog, color:'#FFB800' },
+      { label:'Completados', value:counts.done, color:'#00A44B' }
+    ];
+    stack.innerHTML = rows.map(r => `
+      <div class="status-row">
+        <span class="sr-label">${r.label}</span>
+        <div class="sr-bar"><i style="width:${(r.value/total*100).toFixed(1)}%;background:${r.color}"></i></div>
+        <span class="sr-val">${r.value}</span>
+      </div>
+    `).join('');
+  }
+
+  const pBars = document.getElementById('phaseBars');
+  if(pBars){
+    pBars.innerHTML = PHASES.map(p => {
+      const prog = phaseProgress(p);
+      const barColor = prog.pct === 100 ? '#00A44B' : (prog.pct > 0 ? '#FFB800' : '#cbd5e1');
+      return `
+        <div class="status-row">
+          <span class="sr-label" title="${p.name}" style="width:120px">${p.code}</span>
+          <div class="sr-bar"><i style="width:${prog.pct}%;background:${barColor}"></i></div>
+          <span class="sr-val">${prog.pct}%</span>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+function initTabs(){
+  const tabs = document.querySelectorAll('.tab-btn');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      const panel = document.getElementById('panel-' + target);
+      if(panel) panel.classList.add('active');
+
+      if(target === 'control') renderControlBoard();
+      if(target === 'resumen'){ renderGantt(); renderPhaseSummary(); renderKpis(); }
+      if(target === 'fases'){ renderPhases(); }
+      if(target === 'equipo'){ renderTeam(); }
+    });
+  });
+}
+
+/* ============================================================
+   ROLE DROPDOWNS
+   ============================================================ */
+function populateRoleSelects(){
+  const execSel = document.getElementById('execRole');
+  const clientSel = document.getElementById('clientRole');
+  if(!execSel || !clientSel) return;
+
+  // Limpiar y repoblar (evita duplicados si se llama dos veces)
+  execSel.innerHTML = '<option value="">— Seleccione un rol del proyecto —</option>';
+  clientSel.innerHTML = '<option value="">— Seleccione un rol del proyecto —</option>';
+
+  ROLES_EXEC.forEach(r => {
+    const o = document.createElement('option');
+    o.value = r; o.textContent = r;
+    execSel.appendChild(o);
+  });
+  ROLES_CLIENT.forEach(r => {
+    const o = document.createElement('option');
+    o.value = r; o.textContent = r;
+    clientSel.appendChild(o);
+  });
+}
+
+/* ============================================================
+   TEAM FORMS
+   ============================================================ */
+function initTeamForms(){
+  document.querySelectorAll('[data-add]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const team = btn.dataset.add;
+      const prefix = team === 'exec' ? 'exec' : 'client';
+      const roleEl = document.getElementById(prefix + 'Role');
+      const nameEl = document.getElementById(prefix + 'Name');
+      const areaEl = document.getElementById(prefix + 'Area');
+
+      const role = roleEl.value.trim();
+      const name = nameEl.value.trim();
+      const area = areaEl.value.trim();
+
+      if(!role){
+        roleEl.focus();
+        showToast('Seleccione un rol del proyecto');
+        return;
+      }
+
+      const exists = state.team[team].some(m => m.role === role);
+      if(exists){
+        showToast('Ese rol ya está registrado');
+        return;
+      }
+
+      state.team[team].push({ role, name, area });
+      saveState();
+
+      roleEl.value = '';
+      nameEl.value = '';
+      areaEl.value = '';
+
+      renderTeam();
+      const badgeE = document.getElementById('badgeEquipo');
+      if(badgeE) badgeE.textContent = (state.team.exec.length + state.team.client.length);
+      showToast(name ? 'Integrante agregado' : 'Rol agregado (por asignar)');
+    });
+  });
+
+  ['execName','execArea'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); document.querySelector('[data-add="exec"]').click(); }});
+  });
+  ['clientName','clientArea'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); document.querySelector('[data-add="client"]').click(); }});
+  });
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  if(!t) return;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init(){
+  loadState();
+  populateRoleSelects();
+  renderKpis();
+  renderGantt();
+  renderPhaseSummary();
+  renderPhases();
+  renderTeam();
+  renderControlBoard();
+  initTabs();
+  initTeamForms();
+
+  const headerP = document.getElementById('headerProgress');
+  if(headerP) headerP.innerHTML = globalProgress() + '<span class="unit">%</span>';
+  const badgeF = document.getElementById('badgeFases');
+  if(badgeF) badgeF.textContent = globalCounts().total;
+  const badgeE = document.getElementById('badgeEquipo');
+  if(badgeE) badgeE.textContent = (state.team.exec.length + state.team.client.length);
+
+  const seeded = localStorage.getItem(STORAGE_KEY + '_seeded');
+  if(!seeded){
+    if(state.team.exec.length === 0 && state.team.client.length === 0){
+      state.team.exec = [
+        { role: 'Director de Proyecto', name: 'Juan A. Castillo-M, PhD', area: 'ErgoMotion-lab · Universidad del Rosario' },
+        { role: 'Coordinador Biomecánico', name: '', area: 'Escuela de Medicina · UR' },
+        { role: 'Líder de Entrenamiento', name: '', area: 'Equipo técnico UR' },
+        { role: 'Analista de Datos y KPIs', name: '', area: 'Advance · Analítica' }
+      ];
+      state.team.client = [
+        { role: 'Líder HSE', name: '', area: 'ENEL · Salud y Seguridad' },
+        { role: 'Gerente de Operación MT/AT', name: '', area: 'ENEL · Mantenimiento' },
+        { role: 'Analista de Talento Humano', name: '', area: 'ENEL · Talento Humano' }
+      ];
+      saveState();
+    }
+    localStorage.setItem(STORAGE_KEY + '_seeded', '1');
+    renderTeam();
+    if(badgeE) badgeE.textContent = (state.team.exec.length + state.team.client.length);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

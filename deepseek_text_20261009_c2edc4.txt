@@ -1,0 +1,28 @@
+
+### `.gitignore`
+
+```gitignore
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Dependencias (si en el futuro se agregan)
+node_modules/
+package-lock.json
+
+# Builds
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Entorno
+.env
+.env.local
